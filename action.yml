@@ -1,0 +1,20 @@
+name: publish
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run build
+      - run: chmod +x ./lib/update-gh-pages.sh
+      - run: ./lib/update-gh-pages.sh
+    env:
+      GITHUB_TOKEN: ${{ secrets.github_token }}
